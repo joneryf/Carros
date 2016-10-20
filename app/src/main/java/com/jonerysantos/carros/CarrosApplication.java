@@ -14,6 +14,8 @@ public class CarrosApplication extends Application {
         return instance; //Singleton
     }
 
+    //sempre que precisar salvar ou ler informações globais só utilizar
+    //CarrosApplication app = CarrosApplication.getInstance();
     @Override
     public void onCreate() {
         super.onCreate();
