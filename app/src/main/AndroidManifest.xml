@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jonerysantos.carros">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- android:name=".CarrosApplication" so coloca essa linha se utilizar o CarrosApplication, abaixo do application -->
     <application
         android:allowBackup="true"
@@ -18,10 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CarrosActivity"
+        <activity
+            android:name=".activity.CarrosActivity"
             android:parentActivityName=".activity.MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
+        <activity android:name=".activity.SiteLivroActivity"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
         </activity>
     </application>
 
