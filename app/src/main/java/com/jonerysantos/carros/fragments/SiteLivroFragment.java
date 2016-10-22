@@ -3,6 +3,7 @@ package com.jonerysantos.carros.fragments;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.jonerysantos.carros.AboutDialog;
 import com.jonerysantos.carros.R;
 
 public class SiteLivroFragment extends BaseFragment {
@@ -61,6 +63,17 @@ public class SiteLivroFragment extends BaseFragment {
                 progress.setVisibility(View.INVISIBLE);
                 //Termina a animação do Swipe to Refresh
                 swipeLayout.setRefreshing(false);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.d("livroandroid", "webview url: " + url);
+                if(url != null && url.endsWith("sobre.htm")){
+                    AboutDialog.showAbout(getFragmentManager());
+                    //Retorna true para informar que interceptamos o evento
+                    return true;
+                }
+                return super.shouldOverrideUrlLoading(view, url);
             }
         });
     }
