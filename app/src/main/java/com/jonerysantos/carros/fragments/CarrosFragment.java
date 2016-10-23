@@ -2,6 +2,7 @@ package com.jonerysantos.carros.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,19 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.jonerysantos.carros.R;
 import com.jonerysantos.carros.activity.CarroActivity;
 import com.jonerysantos.carros.adapter.CarroAdapter;
 import com.jonerysantos.carros.domain.Carro;
 import com.jonerysantos.carros.domain.CarroService;
-
 import java.io.IOException;
 import java.util.List;
 
-import static android.R.attr.fragment;
+import livroandroid.lib.utils.AndroidUtils;
 
 public class CarrosFragment extends BaseFragment {
     protected RecyclerView recyclerView;
@@ -66,31 +63,7 @@ public class CarrosFragment extends BaseFragment {
         taskCarros();
     }
     private void taskCarros(){
-        //Mostra uma janela de progresso
-        dialog = ProgressDialog.show(getActivity(), "Exemplo",
-                "Por favor, aguarde...", false, true);
-        new Thread(){
-            @Override
-            public void run() {
-                try {
-                    //Busca os carros em uma thread
-                    carros = CarroService.getCarros(getContext(), tipo);
-                    //Atualiza a lista na UI Thread
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //É aqui que utiliza o adapter. O adapter fornece o conteudo para a lista
-                            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
-                        }
-                    });
-                } catch (IOException e){
-                    Log.e("livro",e.getMessage(), e);
-                } finally {
-                    //Fecha a janela de progresso
-                    dialog.dismiss();
-                }
-            }
-        }.start();
+       new GetCarrosTask().execute();
     }
     //Da mesma forma tratar o click
     private CarroAdapter.CarroOnClickListener onClickCarro(){
@@ -105,5 +78,28 @@ public class CarrosFragment extends BaseFragment {
                 startActivity(i);
             }
         };
+    }
+    //Task para buscar os carros
+    private class GetCarrosTask extends AsyncTask<Void, Void, List<Carro>> {
+        @Override
+        protected List<Carro> doInBackground(Void... params) {
+//            boolean internetOk = AndroidUtils.isNetworkAvailable(getContext());
+                try {
+                    //Busca os carros em background (Thread)
+                    return CarroService.getCarros(getContext(), tipo);
+                } catch (IOException e) {
+                    Log.d("Erro: ", e.getMessage());
+                    return null;
+                }
+        }
+        //Atualiza a interface
+        @Override
+        protected void onPostExecute(List<Carro> carros) {
+            if(carros != null){
+                CarrosFragment.this.carros = carros;
+                //Atualiza a view na UI Thread
+                recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+            }
+        }
     }
 }

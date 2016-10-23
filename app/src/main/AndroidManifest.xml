@@ -3,6 +3,7 @@
     package="com.jonerysantos.carros">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <!-- android:name=".CarrosApplication" so coloca essa linha se utilizar o CarrosApplication, abaixo do application -->
     <application

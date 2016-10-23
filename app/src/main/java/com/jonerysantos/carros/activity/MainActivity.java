@@ -10,6 +10,8 @@ import android.view.ViewParent;
 import com.jonerysantos.carros.R;
 import com.jonerysantos.carros.adapter.TabsAdapter;
 
+import livroandroid.lib.utils.Prefs;
+
 public class MainActivity extends BaseActivity {
 
     @Override
@@ -40,5 +42,19 @@ public class MainActivity extends BaseActivity {
         int cor = ContextCompat.getColor(getContext(), R.color.white);
         //Cor branca no text(o fundo azul foi definido no layout
         tabLayout.setTabTextColors(cor, cor);
+        //Lê o índice da última tab utilizada no aplicativo
+        int tabIdx = Prefs.getInteger(getContext(), "tabIdx");
+        viewPager.setCurrentItem(tabIdx);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            @Override
+            public void onPageSelected(int position) {
+                //Salva o índice da página/tab selecionada
+                Prefs.setInteger(getContext(), "tabIdx", viewPager.getCurrentItem());
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
     }
 }
