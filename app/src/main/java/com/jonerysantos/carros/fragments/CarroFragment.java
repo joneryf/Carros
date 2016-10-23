@@ -25,9 +25,6 @@ public class CarroFragment extends BaseFragment {
         TextView tDesc = (TextView) view.findViewById(R.id.tDesc);
         tDesc.setText(carro.desc);
         //Mostra a foto do carro no ImageView
-        //a lib Picasso está dando uma força aqui
-        final ImageView imgView =(ImageView) view.findViewById(R.id.img);
-        Picasso.with(getContext()).load(carro.urlFoto).fit().into(imgView);
         return view;
     }
 }
