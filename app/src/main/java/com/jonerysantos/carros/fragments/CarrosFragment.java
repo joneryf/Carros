@@ -1,5 +1,6 @@
 package com.jonerysantos.carros.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ import static android.R.attr.fragment;
 public class CarrosFragment extends BaseFragment {
     protected RecyclerView recyclerView;
     private int tipo;
+    private ProgressDialog dialog;
     //Lista de carros
     private List<Carro> carros;
     //Método para instanciar esse fragment pelo tipo
@@ -64,14 +66,31 @@ public class CarrosFragment extends BaseFragment {
         taskCarros();
     }
     private void taskCarros(){
-        try {
-            //Busca os carros pelo tipo
-            this.carros = CarroService.getCarros(getContext(), tipo);
-            //É aqui que utiliza o adapter. O adapter fornece o conteudo para a lista
-            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
-        } catch (IOException e){
-            Log.e("livro",e.getMessage(), e);
-        }
+        //Mostra uma janela de progresso
+        dialog = ProgressDialog.show(getActivity(), "Exemplo",
+                "Por favor, aguarde...", false, true);
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    //Busca os carros em uma thread
+                    carros = CarroService.getCarros(getContext(), tipo);
+                    //Atualiza a lista na UI Thread
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //É aqui que utiliza o adapter. O adapter fornece o conteudo para a lista
+                            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+                        }
+                    });
+                } catch (IOException e){
+                    Log.e("livro",e.getMessage(), e);
+                } finally {
+                    //Fecha a janela de progresso
+                    dialog.dismiss();
+                }
+            }
+        }.start();
     }
     //Da mesma forma tratar o click
     private CarroAdapter.CarroOnClickListener onClickCarro(){
