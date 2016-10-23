@@ -1,5 +1,6 @@
 package com.jonerysantos.carros.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jonerysantos.carros.R;
+import com.jonerysantos.carros.activity.CarroActivity;
 import com.jonerysantos.carros.adapter.CarroAdapter;
 import com.jonerysantos.carros.domain.Carro;
 import com.jonerysantos.carros.domain.CarroService;
@@ -72,8 +74,10 @@ public class CarrosFragment extends BaseFragment {
             public void onClickCarro(View view, int idx) {
                 //Carro selecionado
                 Carro c = carros.get(idx);
-                //Mostra um alerta rapido com um toast
-                Toast.makeText(getContext(), "Carro: " + c.nome, Toast.LENGTH_SHORT).show();
+                //Abre os detalhes do carro
+                Intent i = new Intent(getContext(), CarroActivity.class);
+                i.putExtra("carro", c);
+                startActivity(i);
             }
         };
     }
