@@ -29,7 +29,7 @@ public class CarrosDB extends SQLiteOpenHelper {
         db.execSQL("create table if not exists carro (_id integer primary key" +
                 "autoincrement, nome text, desc text, url_foto text, url_video text, " +
                 "latitute text, longitude text, tipo text);");
-        Log.d(TAG, "Tabela carroc criada com sucesso.");
+        Log.d(TAG, "Tabela carro criada com sucesso.");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

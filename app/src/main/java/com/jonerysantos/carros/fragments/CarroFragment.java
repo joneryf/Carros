@@ -1,5 +1,7 @@
 package com.jonerysantos.carros.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -8,9 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.jonerysantos.carros.CarrosApplication;
 import com.jonerysantos.carros.R;
 import com.jonerysantos.carros.domain.Carro;
 import com.jonerysantos.carros.domain.CarrosDB;
+
+import static android.content.Intent.ACTION_VIEW;
 
 
 public class CarroFragment extends BaseFragment {
@@ -34,6 +40,7 @@ public class CarroFragment extends BaseFragment {
                 startTask("favorito", taskFavoritar());
             }
         });
+        view.findViewById(R.id.imgPlayVideo).setOnClickListener(onClickPlayVideo());
         return view;
     }
 
@@ -88,6 +95,8 @@ public class CarroFragment extends BaseFragment {
                     snack(getView(), "Carro removido dos favoritos");
                 }
                 setFabColor(favoritou);
+                //Envia o evento para o bus depois de clicar no botão FAB
+                CarrosApplication.getInstance().getBus().post("refresh");
             }
         };
     }
@@ -101,5 +110,18 @@ public class CarroFragment extends BaseFragment {
             fab.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.accent));
             fab.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.gray));
         }
+    }
+
+    private View.OnClickListener onClickPlayVideo(){
+        return new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //Intent para tocar o video no player nativo
+                String url = carro.urlVideo;
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(url), "video/*");
+                startActivity(intent);
+            }
+        };
     }
 }

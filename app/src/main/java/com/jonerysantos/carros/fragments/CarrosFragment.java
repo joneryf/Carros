@@ -12,20 +12,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.jonerysantos.carros.CarrosApplication;
 import com.jonerysantos.carros.R;
 import com.jonerysantos.carros.activity.CarroActivity;
 import com.jonerysantos.carros.adapter.CarroAdapter;
 import com.jonerysantos.carros.domain.Carro;
 import com.jonerysantos.carros.domain.CarroService;
+import com.squareup.otto.Subscribe;
 import java.io.IOException;
 import java.util.List;
 
-import livroandroid.lib.utils.AndroidUtils;
 
 public class CarrosFragment extends BaseFragment {
     protected RecyclerView recyclerView;
     private int tipo;
-    private ProgressDialog dialog;
     //Lista de carros
     private List<Carro> carros;
     //Método para instanciar esse fragment pelo tipo
@@ -43,6 +43,20 @@ public class CarrosFragment extends BaseFragment {
         if (getArguments() != null) {
             this.tipo = getArguments().getInt("tipo");
         }
+        //Registra a classe para receber eventos
+        CarrosApplication.getInstance().getBus().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //Cancela o recebimento de eventos
+        CarrosApplication.getInstance().getBus().unregister(this);
+    }
+    @Subscribe
+    public void onBusAtualizarListaCarros(String refresh){
+        //Recebeu o evento, atualiza a lista
+        taskCarros();
     }
 
     @Override
