@@ -6,12 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static android.R.attr.name;
 
 /**
  * Created by Jonery on 23/10/2016.

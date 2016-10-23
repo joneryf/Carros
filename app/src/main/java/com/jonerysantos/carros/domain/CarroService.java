@@ -12,6 +12,8 @@ import java.util.List;
 import livroandroid.lib.utils.FileUtils;
 import livroandroid.lib.utils.HttpHelper;
 
+import static com.jonerysantos.carros.R.string.carros;
+
 /**
  * Created by Jonery on 22/10/2016.
  */
@@ -22,12 +24,20 @@ public class CarroService {
     private static final String URL = "http://www.livroandroid.com.br/livro/carros/carros_{tipo}.json";
 
     public static List<Carro> getCarros(Context context, int tipo) throws IOException {
-        String tipoString = getTipo(tipo);
-        String url = URL.replace("{tipo}", tipoString);
-        //Faz a requisição HTTP no servidor e retorna a string com o conteúdo
-        HttpHelper http = new HttpHelper();
-        String json = http.doGet(url);
-        List<Carro> carros = parserJSON(context, json);
+        List<Carro> carros = null;
+        if(tipo == R.string.favoritos){
+            //Consulta no banco de dados
+            CarrosDB db = new CarrosDB(context);
+            carros = db.findAll();
+        } else {
+            //Consulta no web service
+            String tipoString = getTipo(tipo);
+            String url = URL.replace("{tipo}", tipoString);
+            //Faz a requisição HTTP no servidor e retorna a string com o conteúdo
+            HttpHelper http = new HttpHelper();
+            String json = http.doGet(url);
+            carros = parserJSON(context, json);
+        }
         return carros;
     }
 

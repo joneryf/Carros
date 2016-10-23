@@ -1,5 +1,6 @@
 package com.jonerysantos.carros.activity;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -7,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewParent;
 
+import com.jonerysantos.carros.PermissionUtils;
 import com.jonerysantos.carros.R;
 import com.jonerysantos.carros.adapter.TabsAdapter;
 
@@ -20,6 +22,11 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         setUpToolbar();
         setupNavDrawer();
+//        String[] permissoes = new String[]{
+//                Manifest.permission.READ_EXTERNAL_STORAGE,
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//        };
+//        PermissionUtils.validate(getActivity(), 0, permissoes);
         setupViewPagerTabs();
         //FAB
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
