@@ -15,7 +15,7 @@ public class CarroActivity extends BaseActivity {
         setContentView(R.layout.activity_carro);
         setUpToolbar();
         //Titulo da toolbar e botao navigation up
-        Carro c = (Carro) getIntent().getSerializableExtra("carro");
+        Carro c = (Carro) getIntent().getParcelableExtra("carro");
         getSupportActionBar().setTitle(c.nome);
         //Liga o botao up navigation para voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

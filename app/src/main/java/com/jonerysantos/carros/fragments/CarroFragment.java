@@ -20,7 +20,7 @@ public class CarroFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_carro, container, false);
         //Lê o objeto carro dos parametros
-        carro = (Carro) getArguments().getSerializable("carro");
+        carro = (Carro) getArguments().getParcelable("carro");
         //Atualiza a descrição do carro no TextView
         TextView tDesc = (TextView) view.findViewById(R.id.tDesc);
         tDesc.setText(carro.desc);
