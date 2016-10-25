@@ -1,8 +1,8 @@
 package com.jonerysantos.carros.fragments;
 
-import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,14 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.jonerysantos.carros.CarrosApplication;
-import com.jonerysantos.carros.PermissionUtils;
 import com.jonerysantos.carros.R;
 import com.jonerysantos.carros.domain.Carro;
 import com.jonerysantos.carros.domain.CarrosDB;
-
-import static android.content.Intent.ACTION_VIEW;
 
 
 public class CarroFragment extends BaseFragment {
@@ -111,11 +107,15 @@ public class CarroFragment extends BaseFragment {
     private void setFabColor(Boolean favorito){
         if(favorito){
             //Cor do botão FAB se está favoritado
-            fab.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.accent));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                fab.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.accent));
+            }
             fab.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.yellow));
         } else{
             //Cor do botão FAB se não está favoritado
-            fab.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.accent));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                fab.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.accent));
+            }
             fab.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.gray));
         }
     }
