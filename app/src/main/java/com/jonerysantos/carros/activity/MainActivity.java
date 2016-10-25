@@ -1,10 +1,13 @@
 package com.jonerysantos.carros.activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewParent;
 
@@ -22,11 +25,14 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         setUpToolbar();
         setupNavDrawer();
-//        String[] permissoes = new String[]{
-//                Manifest.permission.READ_EXTERNAL_STORAGE,
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//        };
-//        PermissionUtils.validate(getActivity(), 0, permissoes);
+        //solicita as permissoes pro Mapa
+        String[] permissoes = new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+        };
+        PermissionUtils.validate(getActivity(), 0, permissoes);
         setupViewPagerTabs();
         //FAB
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
@@ -64,4 +70,31 @@ public class MainActivity extends BaseActivity {
             public void onPageScrollStateChanged(int state) {}
         });
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        for (int result : grantResults) {
+            if (result == PackageManager.PERMISSION_DENIED) {
+                alertAndFinish();
+                return;
+            }
+        }
+    }
+
+        private void alertAndFinish() {
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.app_name).setMessage("Para utilizar este aplicativo, você precisa aceitar as permissões.");
+                // Add the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        }
 }

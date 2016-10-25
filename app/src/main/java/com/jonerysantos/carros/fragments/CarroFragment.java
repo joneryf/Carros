@@ -1,5 +1,6 @@
 package com.jonerysantos.carros.fragments;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.jonerysantos.carros.CarrosApplication;
+import com.jonerysantos.carros.PermissionUtils;
 import com.jonerysantos.carros.R;
 import com.jonerysantos.carros.domain.Carro;
 import com.jonerysantos.carros.domain.CarrosDB;
@@ -35,16 +37,15 @@ public class CarroFragment extends BaseFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Solicita as permissões
-//                String[] permissoes = new String[]{
-//                        Manifest.permission.READ_EXTERNAL_STORAGE,
-//                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                };
-//                PermissionUtils.validate(getActivity(), 0, permissoes);
+
                 startTask("favorito", taskFavoritar());
             }
         });
         view.findViewById(R.id.imgPlayVideo).setOnClickListener(onClickPlayVideo());
+        //Adiciona o fragment do mapa
+        MapaFragment mapaFragment = new MapaFragment();
+        mapaFragment.setArguments(getArguments());
+        getChildFragmentManager().beginTransaction().replace(R.id.mapaFragment,mapaFragment).commit();
         return view;
     }
 
