@@ -32,6 +32,8 @@ public class CarroFragment extends BaseFragment {
         //Atualiza a descrição do carro no TextView
         TextView tDesc = (TextView) view.findViewById(R.id.tDesc);
         tDesc.setText(carro.desc);
+        TextView tLatLng = (TextView) view.findViewById(R.id.tLatLng);
+        tLatLng.setText(carro.latitude + " / " + carro.longitude);
         //Mostra a foto do carro no ImageView
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
